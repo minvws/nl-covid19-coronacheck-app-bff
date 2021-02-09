@@ -7,12 +7,21 @@
 | Application Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
 |
 */
+$router->get('/holder/config', ['middleware' => 'cms_sign', 'uses' => 'HolderController@config']);
+$router->get('/holder/config_ctp', ['middleware' => 'cms_sign', 'uses' => 'HolderController@config_ctp']);
+$router->get('/holder/public_keys', ['middleware' => 'cms_sign', 'uses' => 'HolderController@public_keys']);
+$router->get('/holder/nonce', ['middleware' => 'cms_sign', 'uses' => 'HolderController@nonce']);
+$router->get('/holder/proof', ['middleware' => 'cms_sign', 'uses' => 'HolderController@proof']);
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+/*
+|--------------------------------------------------------------------------
+| Monitoring Routes
+|--------------------------------------------------------------------------
+|
+|
+*/
+$router->get('/status', 'MonitoringController@config');
+$router->get('/ping', 'MonitoringController@config');
+$router->get('/cache', 'MonitoringController@config');
