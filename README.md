@@ -1,24 +1,17 @@
-# Lumen PHP Framework
+# COVID-19 CoronaTester App - Backend for Frontend (BFF)
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://img.shields.io/packagist/v/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://img.shields.io/packagist/l/laravel/framework)](https://packagist.org/packages/laravel/lumen-framework)
+## Introduction
+This repository contains the lumen app which sits in front of the CoronaTester backend services.
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+## Installation
+Standard Lumen Application
 
-## Official Documentation
+## Development & Contribution process
 
-Documentation for the framework can be found on the [Lumen website](https://lumen.laravel.com/docs).
+The development team works on the repository in a private fork (for reasons of compliance with existing processes) and shares its work as often as possible.
 
-## Contributing
+If you plan to make non-trivial changes, we recommend to open an issue beforehand where we can discuss your planned changes.
+This increases the chance that we might be able to use your contribution (or it avoids doing work if there are reasons why we wouldn't be able to use it).
 
-Thank you for considering contributing to Lumen! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Note that all commits should be signed using a gpg key.
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Lumen framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
