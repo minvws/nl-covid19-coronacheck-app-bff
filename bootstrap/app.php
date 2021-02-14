@@ -62,6 +62,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('database');
+$app->configure('filesystems');
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,7 @@ $app->configure('database');
 
 $app->routeMiddleware([
     'cms_sign' => App\Http\Middleware\CMSSignature::class,
+    'cdn_json' => App\Http\Middleware\StaticJsonCDN::class,
 ]);
 
 

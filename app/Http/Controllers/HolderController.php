@@ -17,29 +17,10 @@ class HolderController extends MonitoringController
 
     }
 
-    public function config(): JsonResponse
+    public function cdnjson(): JsonResponse
     {
-        $config = json_encode(array());
-        return response()->json($config);
-    }
-
-    public function config_ctp(): JsonResponse
-    {
-        $config = json_encode(array());
-        return response()->json($config);
-    }
-
-
-    public function public_keys(): JsonResponse
-    {
-        $config = json_encode(array());
-        return response()->json($config);
-    }
-
-    public function test_types(): JsonResponse
-    {
-        $config = json_encode(array());
-        return response()->json($config);
+        // Empty response. Will be filled by middleware.
+        return response()->json([], 200);
     }
 
     public function nonce(CtClService $ctclService, SessionService $sessionService): JsonResponse
