@@ -22,7 +22,7 @@ class CMSSignature
         $signature = $this->cmsSignatureService->signData($data);
 
         if(config('app.signature_format') == "inline") {
-            return response()->json(["signature" => $signature, "payload" => base64_encode($data)]);
+            return $response->setData(["signature" => $signature, "payload" => base64_encode($data)]);
         }
         else {
             return $response->header('Signature', $signature);
