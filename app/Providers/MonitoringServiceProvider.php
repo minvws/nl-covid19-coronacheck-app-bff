@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Services\MonitoringService;
 use Illuminate\Support\ServiceProvider;
 
-class SessionServiceProvider extends ServiceProvider
+class MonitoringServiceProvider extends ServiceProvider
 {
 
     public function register()

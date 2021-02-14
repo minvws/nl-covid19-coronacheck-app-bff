@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Services\CtClService;
+
 use App\Services\SessionService;
+use Log;
+use App\Services\CtClService;
+use App\Services\MonitoringService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -49,12 +52,12 @@ class HolderController extends MonitoringController
 
             return response()->json(["nonce" => $nonce, "stoken" => $sessionToken], 200);
         } catch (\Exception $e) {
-            // TODO: implement logging for exception and error codes
+            Log::error('Failed to get nonce');
             return response()->json(["status" => "error", "code" => 0],500);
         }
     }
 
-    public function proof(Request $request, CtClService $ctClService, SessionService $sessionService): JsonResponse
+    public function proof(Request $request, CtClService $ctClService, MonitoringService $sessionService): JsonResponse
     {
         // String
         $stoken = $request->json()->get('stoken');
@@ -66,24 +69,27 @@ class HolderController extends MonitoringController
         $icm = $request->json()->get('icm');
 
         if(empty($stoken) || empty($testResult) || empty($icm)) {
-            // TODO: implement logging for exception and error codes
+            Log::error('Cannot create proof. Did not receive stoken, testResult, or icm.');
+
             return response()->json(["status" => "error", "code" => 0], 500);
         }
-
-        // Test Signature on test result
-
-        // Unwrap Test Payload
-        $testResultPayloadDecoded = base64_decode($testResult->payload);
-        $testResultPayloadJson = json_decode($testResultPayloadDecoded);
-
-        // Validate Test Values
-
-        // ICM Should be in string form, but may be string or json.
-        if(!is_string($icm)) {
-            $icm = json_encode($icm,JSON_UNESCAPED_SLASHES);
-        }
-
         try {
+
+            // Test Signature on test result
+            // TODO: Implement signature validation
+
+            // Unwrap Test Payload
+            $testResultPayloadDecoded = base64_decode($testResult->payload);
+            $testResultPayloadJson = json_decode($testResultPayloadDecoded);
+
+            // Validate Test Values
+            // TODO: Implement test value validation
+
+            // ICM Should be in string form, but may be string or json.
+            if(!is_string($icm)) {
+                $icm = json_encode($icm,JSON_UNESCAPED_SLASHES);
+            }
+
             // Load Nonce
             $nonce = $sessionService->getSessionNonce($stoken);
 
@@ -106,7 +112,7 @@ class HolderController extends MonitoringController
 
             return response()->json(["ism" => $issueSignatureMessage->ism, "attributes" => $attributes],200);
         } catch (\Exception $e) {
-            // TODO: implement logging for exception and error codes
+            Log::error('Failed to create proof for stoken <'.$stoken.'>');
             return response()->json(["status" => "error", "code" => 0],500);
         }
     }
