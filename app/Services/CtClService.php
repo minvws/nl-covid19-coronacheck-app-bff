@@ -7,8 +7,8 @@ use GuzzleHttp\RequestOptions;
 
 class CtClService
 {
-    private $host;
-    private $port;
+    private String $host;
+    private int $port;
 
     public function __construct($host, $port)
     {
@@ -59,9 +59,7 @@ class CtClService
         );
 
         if($response->getStatusCode() == 200) {
-            $data = json_decode($response->getBody());
-
-            return $data;
+            return json_decode($response->getBody());
         }
         else {
             throw new \Exception('Cannot reach CtCl Api or Incorrect Data Request');

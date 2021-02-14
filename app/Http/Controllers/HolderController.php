@@ -106,7 +106,6 @@ class HolderController extends MonitoringController
 
             return response()->json(["ism" => $issueSignatureMessage->ism, "attributes" => $attributes],200);
         } catch (\Exception $e) {
-            var_dump($e);
             // TODO: implement logging for exception and error codes
             return response()->json(["status" => "error", "code" => 0],500);
         }
