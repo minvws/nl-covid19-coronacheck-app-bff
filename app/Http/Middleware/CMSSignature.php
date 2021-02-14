@@ -3,24 +3,30 @@
 namespace App\Http\Middleware;
 
 use App\Services\CMSSignatureService;
+use Illuminate\Http\Request;
 use Closure;
 
 class CMSSignature
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function handle($request, Closure $next): mixed
+    private CMSSignatureService $cmsSignatureService;
+
+    public function __construct(CMSSignatureService $cmsSignatureService) {
+        $this->cmsSignatureService = $cmsSignatureService;
+    }
+
+    public function handle(Request $request, Closure $next): mixed
     {
         $response = $next($request);
 
-        $signature = CMSSignatureService::getSignature($response->getContent());
+        $data = $response->getContent();
+        $signature = $this->cmsSignatureService->signData($data);
 
-        $response->header("Signature", $signature);
-        return $response;
+        if(config('app.signature_format') == "inline") {
+            return response()->json(["signature" => $signature, "payload" => base64_encode($data)]);
+        }
+        else {
+            return $response->header('Signature', $signature);
+        }
     }
+
 }

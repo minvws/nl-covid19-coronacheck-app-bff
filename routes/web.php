@@ -13,7 +13,7 @@ $router->get('/holder/config', ['middleware' => 'cms_sign', 'uses' => 'HolderCon
 $router->get('/holder/config_ctp', ['middleware' => 'cms_sign', 'uses' => 'HolderController@config_ctp']);
 $router->get('/holder/public_keys', ['middleware' => 'cms_sign', 'uses' => 'HolderController@public_keys']);
 $router->get('/holder/nonce', ['middleware' => 'cms_sign', 'uses' => 'HolderController@nonce']);
-$router->get('/holder/proof', ['middleware' => 'cms_sign', 'uses' => 'HolderController@proof']);
+$router->post('/holder/get_test_ism', ['middleware' => 'cms_sign', 'uses' => 'HolderController@proof']);
 
 /*
 |--------------------------------------------------------------------------

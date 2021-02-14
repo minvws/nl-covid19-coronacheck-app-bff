@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Lumen'),
+    'name' => env('APP_NAME', 'App3Bff'),
 
     /*
     |--------------------------------------------------------------------------
@@ -117,6 +117,7 @@ return [
     'cms_sign_x509_cert' => (str_starts_with(env('CMS_SIGN_X509_CERT'),'/') ? env('CMS_SIGN_X509_CERT') : realpath(dirname(__FILE__))."/../".env('CMS_SIGN_X509_CERT')),
     'cms_sign_x509_key' => (str_starts_with(env('CMS_SIGN_X509_KEY'),'/') ? env('CMS_SIGN_X509_KEY') : realpath(dirname(__FILE__))."/../".env('CMS_SIGN_X509_KEY')),
     'cms_sign_x509_pass' => env('CMS_SIGN_X509_PASS'),
+    'signature_format' => env('SIGNATURE_FORMAT','inline'),
 
     /*
     |--------------------------------------------------------------------------
@@ -128,5 +129,16 @@ return [
     */
     'ctcl_host' => env('CTCL_HOST','127.0.0.1'),
     'ctcl_port' => env('CTCL_PORT','5001'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Session Settings
+    |--------------------------------------------------------------------------
+    |
+    | Used to store nonces
+    |
+    */
+    'session_duration' => env('SESSION_DURATION',300),  // Default 5 minutes
+    'session_token_length' => env('SESSION_TOKEN_LENGTH',32),
 
 ];

@@ -2,43 +2,70 @@
 
 namespace App\Services;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 
 class CtClService
 {
     private $host;
     private $port;
 
-    private $nonce;
-
-    public function __construct()
+    public function __construct($host, $port)
     {
-        $this->host = config('app.ctcl_host');
-        $this->port = config('app.ctcl_port');
-        $this->nonce = null;
+        $this->host = $host;
+        $this->port = $port;
     }
 
-    private function performRequest($requestType) {
-        if($requestType == "nonce") {
-            $url = 'https://'.$this->host.':'.$this->port.'/proof/nonce';
-        }
+    private function getBaseUrl() : String
+    {
+        return 'https://'.$this->host.':'.$this->port;
+    }
 
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', $url,['verify' => false]);
+    public function getNonce() : String
+    {
+        $client = new Client();
+        $response = $client->post(
+            $this->getBaseUrl().'/proof/nonce',
+            [
+                'verify' => (config('app.env') == 'Production') // https certificate check
+            ]
+        );
 
         if($response->getStatusCode() == 200) {
-            return json_decode($response->getBody());
+            $data = json_decode($response->getBody());
+            return $data->nonce;
         }
         else {
-            throw new \Exception("Cannot reach CtCl Api or Incorrect Data Request");
+            throw new \Exception('Cannot reach CtCl Api or Incorrect Data Request');
         }
     }
 
-    public function getNonce() {
-        if($this->nonce == null) {
-            $apiResult = $this->performRequest("nonce");
-            $this->nonce = $apiResult->nonce;
+    public function getProof(String $nonce, String $icm, int $testTime, String $testType) : \stdClass
+    {
+        $client = new Client();
+
+        $response = $client->post(
+            $this->getBaseUrl().'/proof/issue/',
+            [
+                'verify' => (config('app.env') == 'Production'), // https certificate check
+                RequestOptions::JSON =>
+                    [
+                        "nonce" => $nonce,
+                        "testType" => $testType,
+                        "testTime" => strval($testTime),
+                        "commitments" => $icm
+                    ]
+            ]
+        );
+
+        if($response->getStatusCode() == 200) {
+            $data = json_decode($response->getBody());
+
+            return $data;
         }
-        return $this->nonce;
+        else {
+            throw new \Exception('Cannot reach CtCl Api or Incorrect Data Request');
+        }
     }
 
 }
