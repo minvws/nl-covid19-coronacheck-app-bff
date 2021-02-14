@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Services\SessionService;
-use Log;
 use App\Services\CtClService;
 use App\Services\MonitoringService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use MongoDB\Driver\Session;
 
 class HolderController extends MonitoringController
 {
@@ -38,7 +39,7 @@ class HolderController extends MonitoringController
         }
     }
 
-    public function proof(Request $request, CtClService $ctClService, MonitoringService $sessionService): JsonResponse
+    public function proof(Request $request, CtClService $ctClService, SessionService $sessionService): JsonResponse
     {
         // String
         $stoken = $request->json()->get('stoken');

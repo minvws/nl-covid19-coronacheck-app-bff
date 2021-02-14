@@ -33,6 +33,6 @@ jobs:
       - name: Start Redis
         uses: supercharge/redis-github-action@1.2.0
       - name: Static analysis with PHPStan
-        run: vendor/bin/phpstan analyse
+        run: vendor/bin/phpstan analyse app
       - name: Coding style PSR12 Check
         run: vendor/bin/phpcs
