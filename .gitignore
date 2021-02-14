@@ -1,4 +1,4 @@
-/secrets
+/secrets/*
 /vendor
 /.idea
 Homestead.json
