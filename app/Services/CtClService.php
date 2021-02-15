@@ -45,7 +45,7 @@ class CtClService
     }
 
 
-    public function getProof(String $nonce, String $icm, int $testTime, String $testType) : \stdClass
+    public function getProof(String $nonce, String $icm, int $sampleTime, String $testType) : \stdClass
     {
         $client = new Client();
 
@@ -57,15 +57,12 @@ class CtClService
                     [
                         "nonce" => $nonce,
                         "testType" => $testType,
-                        "testTime" => strval($testTime),
+                        "sampleTime" => strval($sampleTime),
                         "commitments" => $icm,
                         "sessionToken" => "xxx"
                     ]
             ]
         );
-
-
-
 
         if($response->getStatusCode() == 200) {
             return json_decode($response->getBody());

@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Services\SessionService;
 use App\Services\CtClService;
-use App\Services\MonitoringService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use MongoDB\Driver\Session;
 
 class HolderController extends MonitoringController
 {
@@ -58,14 +56,36 @@ class HolderController extends MonitoringController
         try {
 
             // Test Signature on test result
-            // TODO: Implement signature validation
+            // TODO: Implement signature validation service
 
             // Unwrap Test Payload
             $testResultPayloadDecoded = base64_decode($testResult->payload);
             $testResultPayloadJson = json_decode($testResultPayloadDecoded);
 
             // Validate Test Values
-            // TODO: Implement test value validation
+            // TODO: Refactor and implement test value validation
+
+            // Create unix time from sampleDate
+            $sampleTime = strtotime($testResultPayloadJson->result->sampleDate);
+
+            // Test was issued before
+            // TODO: Redis service to check this
+
+            // Test was not negative
+            if($testResultPayloadJson->result->negativeResult != true) {
+                return response()->json(["status" => "error", "code" => 99993],400);
+            }
+
+            // Test long ago
+            // TODO: make this dynamic
+            if($sampleTime < (time() - (60*60*24*2))) {
+                return response()->json(["status" => "error", "code" => 99992], 400);
+            }
+
+            // Test in the future
+            if($sampleTime > time()) {
+                return response()->json(["status" => "error", "code" => 99991],400);
+            }
 
             // ICM Should be in string form, but may be string or json.
             if(!is_string($icm)) {
@@ -75,24 +95,18 @@ class HolderController extends MonitoringController
             // Load Nonce
             $nonce = $sessionService->getSessionNonce($stoken);
 
-            // Create unix time from sampleDate
-            $testTime = strtotime($testResultPayloadJson->result->sampleDate);
-
             // Round to nearest hour just in case they forgot
-            $testTime = $testTime - ($testTime%(60*60));
+            $sampleTime = $sampleTime - ($sampleTime%(60*60));
 
             // Get Proof
             $issueSignatureMessage = $ctClService->getProof(
                 $nonce,
                 base64_encode($icm),
-                $testTime,
+                $sampleTime,
                 $testResultPayloadJson->result->testType
             );
 
-            // Define attributes signed in proof
-            $attributes = [$testResultPayloadJson->result->testType, $testTime];
-
-            return response()->json(["ism" => $issueSignatureMessage->ism, "attributes" => $attributes],200);
+            return response()->json(["ism" => $issueSignatureMessage->ism, "attributes" => $issueSignatureMessage->attributes],200);
         } catch (\Exception $e) {
             Log::error('Failed to create proof for stoken <'.$stoken.'>');
             return response()->json(["status" => "error", "code" => 0],500);
