@@ -8,14 +8,14 @@ class SessionService
 {
     public function getSessionNonce($sessionToken) : String
     {
-        $key = 'session:' . $sessionToken . ':nonce';
+        $key = 'session:' . hash_hmac('sha256',$sessionToken, "bananenbrood") . ':nonce';
         $data = Redis::get($key);
         return strval($data);
     }
 
     public function setSessionNonce($sessionToken, $nonce)
     {
-        $key = 'session:'.$sessionToken.':nonce';
+        $key = 'session:' . hash_hmac('sha256',$sessionToken, "bananenbrood") . ':nonce';
         $data = $nonce;
         Redis::set($key, $data, 'EX', config('app.session_duration'));
     }
