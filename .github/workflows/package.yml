@@ -23,7 +23,7 @@ jobs:
       - run: 'echo "{ \"version\": \"${{ env.RELEASE_VERSION }}\", \"git_ref\": \"$GITHUB_SHA\"}" > public/version.json'
         shell: bash
       - name: Create tar
-        run: tar -czf harrie4_${{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./public ./resources ./routes ./storage ./vendor ./composer.json
+        run: tar -czf ct_bff_{{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./public ./resources ./routes ./storage ./vendor ./composer.json
       - name: Upload release tar
         uses: actions/upload-artifact@v1
         with:
