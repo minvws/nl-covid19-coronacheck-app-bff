@@ -20,12 +20,13 @@ jobs:
           php-version: 8.0
       - name: Composer install (for indexing of vendor blade classes)
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --no-dev
+      - name: Create version.json
       - run: 'echo "{ \"version\": \"${{ env.RELEASE_VERSION }}\", \"git_ref\": \"$GITHUB_SHA\"}" > public/version.json'
         shell: bash
       - name: Create tar
-        run: tar -czf ct_bff_{{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./public ./resources ./routes ./storage ./vendor ./composer.json
+        run: tar -czf ct_bff_${{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./public ./resources ./routes ./storage ./vendor ./composer.json
       - name: Upload release tar
         uses: actions/upload-artifact@v1
         with:
-          name: ct_bff_{{ env.RELEASE_VERSION }}
-          path: ct_bff_{{ env.RELEASE_VERSION }}.tar.gz
+          name: ct_bff_${{ env.RELEASE_VERSION }}
+          path: ct_bff_${{ env.RELEASE_VERSION }}.tar.gz
