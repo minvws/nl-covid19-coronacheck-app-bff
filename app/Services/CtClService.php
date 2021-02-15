@@ -27,7 +27,11 @@ class CtClService
         $response = $client->post(
             $this->getBaseUrl().'/proof/nonce',
             [
-                'verify' => (config('app.env') == 'Production') // https certificate check
+                'verify' => (config('app.env') == 'Production'), // https certificate check
+                RequestOptions::JSON =>
+                    [
+                        "SessionToken" => "xxx",
+                    ]
             ]
         );
 
@@ -39,6 +43,7 @@ class CtClService
             throw new \Exception('Cannot reach CtCl Api or Incorrect Data Request');
         }
     }
+
 
     public function getProof(String $nonce, String $icm, int $testTime, String $testType) : \stdClass
     {
@@ -53,10 +58,14 @@ class CtClService
                         "nonce" => $nonce,
                         "testType" => $testType,
                         "testTime" => strval($testTime),
-                        "commitments" => $icm
+                        "commitments" => $icm,
+                        "sessionToken" => "xxx"
                     ]
             ]
         );
+
+
+
 
         if($response->getStatusCode() == 200) {
             return json_decode($response->getBody());
