@@ -1,10 +1,10 @@
-# COVID-19 <Project Name> - <platform>
+# COVID-19 CoronaTester App - Backend for Frontend (BFF)
 
 ## Introduction
-This repository contains the <platform> implementation of the Dutch COVID-19 <project or app name>.
+This repository contains the lumen app which sits in front of the CoronaTester backend services.
 
-* The <platform> app is located in the repository you are currently viewing.
-* The <related> can be found here: <related repo>
+## Installation
+Standard Lumen Application
 
 ## Development & Contribution process
 
