@@ -2,17 +2,15 @@
 
 namespace App\Providers;
 
-use App\Services\MonitoringService;
+use App\Services\SessionService;
 use Illuminate\Support\ServiceProvider;
 
 class SessionServiceProvider extends ServiceProvider
 {
-
     public function register()
     {
-        $this->app->singleton(MonitoringService::class, function ($app) {
-            return new MonitoringService();
+        $this->app->singleton(SessionService::class, function ($app) {
+            return new SessionService();
         });
     }
-
 }

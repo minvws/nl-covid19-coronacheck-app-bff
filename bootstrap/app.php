@@ -96,6 +96,7 @@ $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(App\Providers\CMSSignatureServiceProvider::class);
 $app->register(App\Providers\CtClServiceProvider::class);
 $app->register(App\Providers\MonitoringServiceProvider::class);
+$app->register(App\Providers\OneTimeTestSignatureCheckServiceProvider::class);
 
 
 /*

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\OneTimeTestSignatureCheckService;
 use App\Services\SessionService;
 use App\Services\CtClService;
 use Illuminate\Support\Facades\Log;
@@ -37,7 +38,8 @@ class HolderController extends MonitoringController
         }
     }
 
-    public function proof(Request $request, CtClService $ctClService, SessionService $sessionService): JsonResponse
+    public function proof(Request $request, CtClService $ctClService, SessionService $sessionService,
+                          OneTimeTestSignatureCheckService $oneTimeCheckService): JsonResponse
     {
         // String
         $stoken = $request->json()->get('stoken');
@@ -68,9 +70,6 @@ class HolderController extends MonitoringController
             // Create unix time from sampleDate
             $sampleTime = strtotime($testResultPayloadJson->result->sampleDate);
 
-            // Test was issued before
-            // TODO: Redis service to check this
-
             // Test was not negative
             if($testResultPayloadJson->result->negativeResult != true) {
                 return response()->json(["status" => "error", "code" => 99993],400);
@@ -79,12 +78,22 @@ class HolderController extends MonitoringController
             // Test long ago
             // TODO: make this dynamic
             if($sampleTime < (time() - (60*60*24*2))) {
-                return response()->json(["status" => "error", "code" => 99992], 400);
+                //return response()->json(["status" => "error", "code" => 99992], 400);
             }
 
             // Test in the future
             if($sampleTime > time()) {
                 return response()->json(["status" => "error", "code" => 99991],400);
+            }
+
+            // Test was issued before
+            $oneTimeCheckServiceResult = $oneTimeCheckService->signTestResult(
+                $testResultPayloadJson->providerIdentifier,
+                $testResultPayloadJson->result->unique
+            );
+
+            if(!$oneTimeCheckServiceResult) {
+                return response()->json(["status" => "error", "code" => 99994],400);
             }
 
             // ICM Should be in string form, but may be string or json.
@@ -105,6 +114,7 @@ class HolderController extends MonitoringController
                 $sampleTime,
                 $testResultPayloadJson->result->testType
             );
+
 
             return response()->json(["ism" => $issueSignatureMessage->ism, "attributes" => $issueSignatureMessage->attributes],200);
         } catch (\Exception $e) {

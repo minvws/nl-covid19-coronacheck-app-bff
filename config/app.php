@@ -152,4 +152,14 @@ return [
     'session_duration' => env('SESSION_DURATION',300),  // Default 5 minutes
     'session_token_length' => env('SESSION_TOKEN_LENGTH',32),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Sign Test Result settings
+    |--------------------------------------------------------------------------
+    |
+    | Used to control the multiple signed test issuance
+    |
+    */
+    'signed_test_hash_duration' => env('SIGNED_TEST_HASH_DURATION',(60*60*24*7)),  // Default 1 week
+
 ];
