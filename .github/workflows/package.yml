@@ -20,6 +20,8 @@ jobs:
           php-version: 8.0
       - name: Composer install (for indexing of vendor blade classes)
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Update composer
+        run: composer update
       - name: Create version.json
         run: 'echo "{ \"version\": \"${{ env.RELEASE_VERSION }}\", \"git_ref\": \"$GITHUB_SHA\"}" > public/version.json'
         shell: bash
