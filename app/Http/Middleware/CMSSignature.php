@@ -18,7 +18,7 @@ class CMSSignature
     {
         $response = $next($request);
 
-        $data = $response->getContent();
+        $data = trim($response->getContent());
         $signature = $this->cmsSignatureService->signData($data);
 
         if(config('app.signature_format') == "inline") {

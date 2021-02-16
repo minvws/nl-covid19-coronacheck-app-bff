@@ -15,6 +15,6 @@ class VerifierController extends MonitoringController
     public function cdnjson(): JsonResponse
     {
         // Empty response. Will be filled by middleware.
-        return response()->json([], 200);
+        return response()->json([], 200,[],JSON_UNESCAPED_SLASHES);
     }
 }

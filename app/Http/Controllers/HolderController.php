@@ -20,7 +20,7 @@ class HolderController extends MonitoringController
     public function cdnjson(): JsonResponse
     {
         // Empty response. Will be filled by middleware.
-        return response()->json([], 200);
+        return response()->json([], 200,[],JSON_UNESCAPED_SLASHES);
     }
 
     public function nonce(CtClService $ctclService, SessionService $sessionService): JsonResponse
@@ -31,10 +31,10 @@ class HolderController extends MonitoringController
 
             $sessionService->setSessionNonce($sessionToken,$nonce);
 
-            return response()->json(["nonce" => $nonce, "stoken" => $sessionToken], 200);
+            return response()->json(["nonce" => $nonce, "stoken" => $sessionToken], 200,[],JSON_UNESCAPED_SLASHES);
         } catch (\Exception $e) {
             Log::error('Failed to get nonce');
-            return response()->json(["status" => "error", "code" => 0],500);
+            return response()->json(["status" => "error", "code" => 0],500,JSON_UNESCAPED_SLASHES);
         }
     }
 
@@ -53,7 +53,7 @@ class HolderController extends MonitoringController
         if(empty($stoken) || empty($testResult) || empty($icm)) {
             Log::error('Cannot create proof. Did not receive stoken, testResult, or icm.');
 
-            return response()->json(["status" => "error", "code" => 0], 500);
+            return response()->json(["status" => "error", "code" => 0], 500,JSON_UNESCAPED_SLASHES);
         }
         try {
 
@@ -67,23 +67,26 @@ class HolderController extends MonitoringController
             // Validate Test Values
             // TODO: Refactor and implement test value validation
 
-            // Create unix time from sampleDate
+            // Create Unix time from sampleDate
             $sampleTime = strtotime($testResultPayloadJson->result->sampleDate);
 
             // Test was not negative
             if($testResultPayloadJson->result->negativeResult != true) {
-                return response()->json(["status" => "error", "code" => 99993],400);
+                $data = ["status" => "error", "code" => 99993];
+                return response()->json($data,400,[],JSON_UNESCAPED_SLASHES);
             }
 
             // Test long ago
             // TODO: make this dynamic
             if($sampleTime < (time() - (60*60*24*2))) {
-                //return response()->json(["status" => "error", "code" => 99992], 400);
+                $data = ["status" => "error", "code" => 99992];
+                return response()->json($data, 400,[],JSON_UNESCAPED_SLASHES);
             }
 
             // Test in the future
             if($sampleTime > time()) {
-                return response()->json(["status" => "error", "code" => 99991],400);
+                $data = ["status" => "error", "code" => 99991];
+                return response()->json($data,400,[],JSON_UNESCAPED_SLASHES);
             }
 
             // Test was issued before
@@ -93,7 +96,7 @@ class HolderController extends MonitoringController
             );
 
             if(!$oneTimeCheckServiceResult) {
-                return response()->json(["status" => "error", "code" => 99994],400);
+                return response()->json(["status" => "error", "code" => 99994],400,[],JSON_UNESCAPED_SLASHES);
             }
 
             // ICM Should be in string form, but may be string or json.
@@ -115,11 +118,21 @@ class HolderController extends MonitoringController
                 $testResultPayloadJson->result->testType
             );
 
+            return response()->json(
+                ["ism" => $issueSignatureMessage->ism, "attributes" => $issueSignatureMessage->attributes],
+                200,
+                [],
+                JSON_UNESCAPED_SLASHES
+            );
 
-            return response()->json(["ism" => $issueSignatureMessage->ism, "attributes" => $issueSignatureMessage->attributes],200);
         } catch (\Exception $e) {
             Log::error('Failed to create proof for stoken <'.$stoken.'>');
-            return response()->json(["status" => "error", "code" => 0],500);
+            return response()->json(
+                ["status" => "error", "code" => 0],
+                500,
+                [],
+                JSON_UNESCAPED_SLASHES
+            );
         }
     }
 
