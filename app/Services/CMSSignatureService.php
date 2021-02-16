@@ -36,7 +36,8 @@ class CMSSignatureService
         file_put_contents($tmpFileDataPath,$data);
 
         // Sign it
-        openssl_cms_sign($tmpFileDataPath,
+        openssl_cms_sign(
+            $tmpFileDataPath,
             $tmpFileSignaturePath,
             $certificatePath,
             array($privateKeyPath, $privateKeyPass),
