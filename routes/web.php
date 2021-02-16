@@ -39,6 +39,13 @@ $router->get(
     ]
 );
 
+$router->get(
+    '/v1/holder/test_types',
+    [
+        'middleware' => ['cms_sign','cdn_json:holder_test_types.json'],
+        'uses' => 'HolderController@cdnjson'
+    ]
+);
 
 // Verifier routes (cache able)
 $router->get(
@@ -50,9 +57,9 @@ $router->get(
 );
 
 $router->get(
-    '/v1/verifier/config_ctp',
+    '/v1/verifier/test_types',
     [
-        'middleware' => ['cms_sign','cdn_json:verifier_config_ctp.json'],
+        'middleware' => ['cms_sign','cdn_json:verifier_test_types.json'],
         'uses' => 'VerifierController@cdnjson'
     ]
 );
