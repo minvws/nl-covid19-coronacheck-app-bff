@@ -128,6 +128,7 @@ return [
     'cms_sign_x509_cert' => (str_starts_with(env('CMS_SIGN_X509_CERT'),'/') ? env('CMS_SIGN_X509_CERT') : realpath(dirname(__FILE__))."/../".env('CMS_SIGN_X509_CERT')),
     'cms_sign_x509_key' => (str_starts_with(env('CMS_SIGN_X509_KEY'),'/') ? env('CMS_SIGN_X509_KEY') : realpath(dirname(__FILE__))."/../".env('CMS_SIGN_X509_KEY')),
     'cms_sign_x509_pass' => env('CMS_SIGN_X509_PASS'),
+    'cms_sign_x509_chain' => (str_starts_with(env('CMS_SIGN_X509_CHAIN'),'/') ? env('CMS_SIGN_X509_CHAIN') : realpath(dirname(__FILE__))."/../".env('CMS_SIGN_X509_CHAIN')),
     'signature_format' => env('SIGNATURE_FORMAT','inline'),
 
     /*

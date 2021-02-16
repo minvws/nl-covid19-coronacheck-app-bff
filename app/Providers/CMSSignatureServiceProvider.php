@@ -15,7 +15,8 @@ class CMSSignatureServiceProvider extends ServiceProvider implements DeferrableP
             return new CMSSignatureService(
                 config('app.cms_sign_x509_cert'),
                 config('app.cms_sign_x509_key'),
-                config('app.cms_sign_x509_pass')
+                config('app.cms_sign_x509_pass'),
+                config('app.cms_sign_x509_chain')
             );
         });
     }
