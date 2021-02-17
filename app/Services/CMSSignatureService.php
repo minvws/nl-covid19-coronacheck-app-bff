@@ -29,7 +29,7 @@ class CMSSignatureService
             $tmpFileSignature = tmpfile();
 
             // Locate CMS public key
-            $cmsPublicKeyPath =config('app.cms_sign_ctp_dir') . strtolower($test->providerIdentifier) .'_cms_sign_public.pem';
+            $cmsPublicKeyPath =config('app.cms_sign_ctp_dir') . '/'. strtolower($test->providerIdentifier) .'_cms_sign_public.pem';
 
             // Init files
             $tmpFilePayloadPath = stream_get_meta_data($tmpFilePayload)['uri'];
@@ -41,6 +41,9 @@ class CMSSignatureService
 
             // This only checks the leaf certificate.
             // TODO:  !!! Also check CA is PKI-O !!!
+
+            // This function is horribly documented. Better to look at the source
+            // https://github.com/php/php-src/blob/master/ext/openssl/openssl.c
             $verifyCert = openssl_cms_verify(
                 $tmpFilePayloadPath,
                 OPENSSL_CMS_NOVERIFY | OPENSSL_CMS_DETACHED | OPENSSL_CMS_NOINTERN,
