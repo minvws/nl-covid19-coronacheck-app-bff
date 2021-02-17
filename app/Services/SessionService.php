@@ -3,13 +3,20 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Redis;
+use \Exception;
 
 class SessionService
 {
+
     public function getSessionNonce($sessionToken) : String
     {
         $key = 'session:' . hash_hmac('sha256',$sessionToken, "bananenbrood") . ':nonce';
         $data = Redis::get($key);
+
+        if(empty($data)) {
+            throw new Exception('Cannot find nonce in redis database');
+        }
+
         return strval($data);
     }
 
