@@ -47,6 +47,10 @@ class CtClService
 
     public function getProof(String $nonce, String $icm, int $sampleTime, String $testType) : \stdClass
     {
+        if(empty($nonce) || empty($icm) || empty($sampleTime) || empty($testType)) {
+            throw new Exception('Attributes missing or empty');
+        }
+
         $client = new Client();
 
         $response = $client->post(
