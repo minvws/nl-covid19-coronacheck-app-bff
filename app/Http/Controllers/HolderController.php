@@ -102,6 +102,13 @@ class HolderController extends BaseController
             if(!is_string($icm)) {
                 $icm = json_encode($icm,JSON_UNESCAPED_SLASHES);
             }
+            else {
+                // Check the string-json does not have escaped backslashes
+                if(str_contains($icm,'\\/')) {
+                    $icm = json_encode(json_decode($icm),JSON_UNESCAPED_SLASHES);
+                }
+
+            }
 
             // Load Nonce
             $nonce = $sessionService->getSessionNonce($stoken);
@@ -132,7 +139,7 @@ class HolderController extends BaseController
                 JSON_UNESCAPED_SLASHES
             );
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error('Failed to create proof for stoken <'.$stoken.'>' . (config('app.debug') ? $e->getMessage() : ''));
 
             return response()->json(
