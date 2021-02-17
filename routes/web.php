@@ -11,8 +11,15 @@
 */
 
 // Holder routes (dynamic data)
-$router->get('/v1/holder/nonce', ['middleware' => 'cms_sign', 'uses' => 'HolderController@nonce']);
-$router->post('/v1/holder/get_test_ism', ['middleware' => 'cms_sign', 'uses' => 'HolderController@proof']);
+$router->get(
+    '/v1/holder/nonce',
+    ['middleware' => 'cms_sign', 'uses' => 'HolderController@nonce']
+);
+
+$router->post(
+    '/v1/holder/get_test_ism',
+    ['middleware' => ['validate_test_cms','cms_sign'], 'uses' => 'HolderController@proof']
+);
 
 // Holder routes (cache able)
 $router->get(

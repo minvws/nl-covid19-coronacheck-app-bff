@@ -130,6 +130,7 @@ return [
     'cms_sign_x509_pass' => env('CMS_SIGN_X509_PASS'),
     'cms_sign_x509_chain' => (str_starts_with(env('CMS_SIGN_X509_CHAIN'),'/') ? env('CMS_SIGN_X509_CHAIN') : realpath(dirname(__FILE__))."/../".env('CMS_SIGN_X509_CHAIN')),
     'signature_format' => env('SIGNATURE_FORMAT','inline'),
+    'cms_sign_ctp_dir' => (str_starts_with(env('CMS_SIGN_CTP_DIR'),'/') ? env('CMS_SIGN_CTP_DIR') : realpath(dirname(__FILE__))."/../".env('CMS_SIGN_CTP_DIR')),
 
     /*
     |--------------------------------------------------------------------------

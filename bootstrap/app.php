@@ -78,6 +78,7 @@ $app->configure('filesystems');
 $app->routeMiddleware([
     'cms_sign' => App\Http\Middleware\CMSSignature::class,
     'cdn_json' => App\Http\Middleware\StaticJsonCDN::class,
+    'validate_test_cms' => App\Http\Middleware\ValidateTestCMS::class,
 ]);
 
 
