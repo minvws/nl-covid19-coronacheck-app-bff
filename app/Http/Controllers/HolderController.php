@@ -53,7 +53,7 @@ class HolderController extends MonitoringController
         if(empty($stoken) || empty($testResult) || empty($icm)) {
             Log::error('Cannot create proof. Did not receive stoken, testResult, or icm.');
 
-            return response()->json(["status" => "error", "code" => 0], 500,JSON_UNESCAPED_SLASHES);
+            return response()->json(["status" => "error", "code" => 0], 500);
         }
         try {
 
@@ -73,30 +73,28 @@ class HolderController extends MonitoringController
             // Test was not negative
             if($testResultPayloadJson->result->negativeResult != true) {
                 $data = ["status" => "error", "code" => 99993];
-                return response()->json($data,400,[],JSON_UNESCAPED_SLASHES);
+                return response()->json($data,400);
             }
 
-            // Test long ago
+            // Test is too old
             // TODO: make this dynamic
             if($sampleTime < (time() - (60*60*24*2))) {
                 $data = ["status" => "error", "code" => 99992];
-                return response()->json($data, 400,[],JSON_UNESCAPED_SLASHES);
+                return response()->json($data, 400);
             }
 
             // Test in the future
             if($sampleTime > time()) {
                 $data = ["status" => "error", "code" => 99991];
-                return response()->json($data,400,[],JSON_UNESCAPED_SLASHES);
+                return response()->json($data,400);
             }
 
             // Test was issued before
-            $oneTimeCheckServiceResult = $oneTimeCheckService->signTestResult(
+            if(!$oneTimeCheckService->canTestResultBeSigned(
                 $testResultPayloadJson->providerIdentifier,
                 $testResultPayloadJson->result->unique
-            );
-
-            if(!$oneTimeCheckServiceResult) {
-                return response()->json(["status" => "error", "code" => 99994],400,[],JSON_UNESCAPED_SLASHES);
+            )) {
+                return response()->json(["status" => "error", "code" => 99994],400);
             }
 
             // ICM Should be in string form, but may be string or json.
@@ -118,6 +116,14 @@ class HolderController extends MonitoringController
                 $testResultPayloadJson->result->testType
             );
 
+            // Set proof as issued
+            if(isset($issueSignatureMessage->ism) && !empty($issueSignatureMessage->ism)) {
+                $oneTimeCheckService->signTestResult(
+                    $testResultPayloadJson->providerIdentifier,
+                    $testResultPayloadJson->result->unique
+                );
+            }
+
             return response()->json(
                 ["ism" => $issueSignatureMessage->ism, "attributes" => $issueSignatureMessage->attributes],
                 200,
@@ -126,9 +132,10 @@ class HolderController extends MonitoringController
             );
 
         } catch (\Exception $e) {
-            Log::error('Failed to create proof for stoken <'.$stoken.'>');
+            Log::error('Failed to create proof for stoken <'.$stoken.'>' . (config('app.debug') ? $e->getMessage() : ''));
+            dd($e);
             return response()->json(
-                ["status" => "error", "code" => 0],
+                ["status" => "error", "code" => 99995],
                 500,
                 [],
                 JSON_UNESCAPED_SLASHES
