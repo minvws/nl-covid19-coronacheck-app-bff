@@ -4,6 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use \Exception;
 
 class CtClService
 {
@@ -40,7 +41,7 @@ class CtClService
             return $data->nonce;
         }
         else {
-            throw new \Exception('Cannot reach CtCl Api or Incorrect Data Request');
+            throw new Exception('Cannot reach CtCl Api or Incorrect Data Request');
         }
     }
 
@@ -72,7 +73,7 @@ class CtClService
             return json_decode($response->getBody());
         }
         else {
-            throw new \Exception('Cannot reach CtCl Api or Incorrect Data Request');
+            throw new Exception('Cannot reach CtCl Api or Incorrect Data Request');
         }
     }
 
