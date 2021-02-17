@@ -16,7 +16,7 @@ Check out code and run `composer install`.
 
 
 ### Configuration Files
-See `.env.sample` or `config/*.php` for configuration options.
+See `.env.example` or `config/*.php` for configuration options.
 
 Two important configuration items when debugging/testing:
 - `SIGNED_TEST_HASH_DURATION` (seconds) is how the fact/hash that a test result has been signed is stored
