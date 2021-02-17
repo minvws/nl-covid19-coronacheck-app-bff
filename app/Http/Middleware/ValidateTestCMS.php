@@ -20,7 +20,7 @@ class ValidateTestCMS
 
         // Check if the call contains a test result
         try {
-            if ($request->header('Content-Type') != "application/json") {
+            if (!str_starts_with($request->header('Content-Type'),"application/json")) {
                 $errorCode = 99981;
                 throw new Exception('Content should be json');
             }
