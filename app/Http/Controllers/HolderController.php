@@ -8,8 +8,9 @@ use App\Services\CtClService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
-class HolderController extends MonitoringController
+class HolderController extends BaseController
 {
 
     public function __construct()
@@ -34,7 +35,7 @@ class HolderController extends MonitoringController
             return response()->json(["nonce" => $nonce, "stoken" => $sessionToken], 200,[],JSON_UNESCAPED_SLASHES);
         } catch (\Exception $e) {
             Log::error('Failed to get nonce');
-            return response()->json(["status" => "error", "code" => 0],500,JSON_UNESCAPED_SLASHES);
+            return response()->json(["status" => "error", "code" => 0],500);
         }
     }
 
@@ -133,7 +134,7 @@ class HolderController extends MonitoringController
 
         } catch (\Exception $e) {
             Log::error('Failed to create proof for stoken <'.$stoken.'>' . (config('app.debug') ? $e->getMessage() : ''));
-            dd($e);
+
             return response()->json(
                 ["status" => "error", "code" => 99995],
                 500,

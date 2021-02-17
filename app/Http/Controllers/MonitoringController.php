@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\MonitoringService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Redis;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class MonitoringController extends BaseController
