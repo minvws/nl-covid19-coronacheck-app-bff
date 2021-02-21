@@ -86,6 +86,7 @@ class HolderController extends BaseController
             }
 
             // Test in the future
+            // TODO: make this more realistic
             if($sampleTime > time()) {
                 $data = ["status" => "error", "code" => 99991];
                 return response()->json($data,400);
@@ -112,7 +113,12 @@ class HolderController extends BaseController
             }
 
             // Load Nonce
-            $nonce = $sessionService->getSessionNonce($stoken);
+            try {
+                $nonce = $sessionService->getSessionNonce($stoken);
+            } Catch (Exception $e) {
+                $data = ["status" => "error", "code" => 99996];
+                return response()->json($data,400);
+            }
 
             // Round to nearest hour just in case they forgot
             $sampleTime = $sampleTime - ($sampleTime%(60*60));
