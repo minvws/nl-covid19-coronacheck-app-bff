@@ -33,6 +33,22 @@ in the `.env` by `CMS_SIGN_CTP_DIR` in the following format `brb_cms_sign_public
 #### CDN Files
 Several API's are loaded statically. These should be placed in the directory specified by `CDN_FILES_DIR`
 
+## Error codes
+Sometimes the `get_test_ism` api will give an error code:
+
+Code | Description
+-----|-----------------------------------
+99981| Test is not in expected format
+99982| Test is empty
+99983| Test signature invalid
+99991| Test sample time in the future
+99992| Test sample time too old (48h)
+99993| Test result was not negative
+99994| Test result signed before
+99995| Unknown error creating signed test result
+99996| Session key no longer valid
+
+
 ## Development & Contribution process
 
 The development team works on the repository in a private fork (for reasons of compliance with existing processes) and shares its work as often as possible.
