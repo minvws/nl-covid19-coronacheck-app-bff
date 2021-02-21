@@ -36,17 +36,17 @@ Several API's are loaded statically. These should be placed in the directory spe
 ## Error codes
 Sometimes the `get_test_ism` api will give an error code:
 
-Code | Description
------|-----------------------------------
-99981| Test is not in expected format
-99982| Test is empty
-99983| Test signature invalid
-99991| Test sample time in the future
-99992| Test sample time too old (48h)
-99993| Test result was not negative
-99994| Test result signed before
-99995| Unknown error creating signed test result
-99996| Session key no longer valid
+Http Code | Status Code | Description
+----------|-------------|-----------------------------------
+400 | 99981| Test is not in expected format
+400 | 99982| Test is empty
+400 | 99983| Test signature invalid
+400 | 99991| Test sample time in the future
+400 | 99992| Test sample time too old (48h)
+400 | 99993| Test result was not negative
+400 | 99994| Test result signed before
+500 | 99995| Unknown error creating signed test result
+400 | 99996| Session key no longer valid
 
 
 ## Development & Contribution process
