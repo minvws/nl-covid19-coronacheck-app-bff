@@ -26,10 +26,17 @@ class MonitoringController extends BaseController
 
     public function status(MonitoringService $ms): JsonResponse
     {
-        $status = new \stdClass();
-        $status->serviceEnabled = $ms->checkServiceEnabled();
-        $status->redis = $ms->checkRedis();
+        $results = array();
+        $results[] = ["service" => "redis", "isHealthy" => $ms->checkRedis()];
 
-        return response()->json($status,200);
+        $overallHealth = true;
+        foreach($results as $r) {
+            if(!$r["isHealthy"]) {
+                $overallHealth = false;
+                break;
+            }
+        }
+
+        return response()->json(["isHealthy" => $overallHealth, "results" => $results],200);
     }
 }

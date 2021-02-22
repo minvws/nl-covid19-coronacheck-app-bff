@@ -87,6 +87,7 @@ $router->get(
 |
 |
 */
+$router->get('/status', 'MonitoringController@status');
 $router->get('/noc/status', 'MonitoringController@status');
 $router->get('/noc/time', 'MonitoringController@time');
 $router->get('/noc/ping', 'MonitoringController@ping');
