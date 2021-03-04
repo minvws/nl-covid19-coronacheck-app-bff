@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Laravel\Lumen\Routing\Controller as BaseController;
 
-class VerifierController extends MonitoringController
+class VerifierController extends BaseController
 {
 
     public function __construct()
