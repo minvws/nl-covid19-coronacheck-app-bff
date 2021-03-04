@@ -22,18 +22,24 @@ class CMSSignature
         $signature = $this->cmsSignatureService->signData($data);
 
         if(config('app.signature_format') == "inline") {
-            return $response->setData(["signature" => $signature, "payload" => base64_encode($data)]);
+            $response->setData(["signature" => $signature, "payload" => base64_encode($data)]);
+            $response->header('x-vws-signed','True');
+            return $response;
         }
         else if(config('app.signature_format') == "inline-double") {
-            return $response->setData(
+            $response->setData(
                 ["signature" => $signature, "payload" => base64_encode($data), "_payload" => $data]
             );
+            $response->header('x-vws-signed','True');
+            return $response;
         }
         else if(config('app.signature_format') == "header") {
-            return $response->header('Signature', $signature);
+            return $response
+                ->header('x-vws-signed','True')
+                ->header('Signature', $signature);
         }
         else {
-            return $response;
+            return $response->header('x-vws-signed','False');
         }
     }
 
