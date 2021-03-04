@@ -79,6 +79,22 @@ $router->get(
     ]
 );
 
+// CTP routes
+$router->post(
+    '/v1/staticproof/paper',
+    [
+        'middleware' => [],
+        'uses' => 'CtpController@paper'
+    ]
+);
+$router->post(
+    '/staticproof/paper',
+    [
+        'middleware' => [],
+        'uses' => 'CtpController@paper'
+    ]
+);
+
 
 /*
 |--------------------------------------------------------------------------
