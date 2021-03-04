@@ -25,7 +25,7 @@ $router->post(
 $router->get(
     '/v1/holder/config',
     [
-        'middleware' => ['cms_sign','cdn_json:holder_config.json'],
+        'middleware' => ['cms_sign','etag','cdn_json:holder_config.json'],
         'uses' => 'HolderController@cdnjson'
     ]
 );
@@ -33,7 +33,7 @@ $router->get(
 $router->get(
     '/v1/holder/config_ctp',
     [
-        'middleware' => ['cms_sign','cdn_json:holder_config_ctp.json'],
+        'middleware' => ['cms_sign','etag','cdn_json:holder_config_ctp.json'],
         'uses' => 'HolderController@cdnjson'
     ]
 );
@@ -41,7 +41,7 @@ $router->get(
 $router->get(
     '/v1/holder/public_keys',
     [
-        'middleware' => ['cms_sign','cdn_json:holder_public_keys.json'],
+        'middleware' => ['cms_sign','etag','cdn_json:holder_public_keys.json'],
         'uses' => 'HolderController@cdnjson'
     ]
 );
@@ -49,7 +49,7 @@ $router->get(
 $router->get(
     '/v1/holder/test_types',
     [
-        'middleware' => ['cms_sign','cdn_json:holder_test_types.json'],
+        'middleware' => ['cms_sign','etag','cdn_json:holder_test_types.json'],
         'uses' => 'HolderController@cdnjson'
     ]
 );
@@ -58,7 +58,7 @@ $router->get(
 $router->get(
     '/v1/verifier/config',
     [
-        'middleware' => ['cms_sign','cdn_json:verifier_config.json'],
+        'middleware' => ['cms_sign','etag','cdn_json:verifier_config.json'],
         'uses' => 'VerifierController@cdnjson'
     ]
 );
@@ -66,7 +66,7 @@ $router->get(
 $router->get(
     '/v1/verifier/test_types',
     [
-        'middleware' => ['cms_sign','cdn_json:verifier_test_types.json'],
+        'middleware' => ['cms_sign','etag','cdn_json:verifier_test_types.json'],
         'uses' => 'VerifierController@cdnjson'
     ]
 );
@@ -74,7 +74,7 @@ $router->get(
 $router->get(
     '/v1/verifier/public_keys',
     [
-        'middleware' => ['cms_sign','cdn_json:verifier_public_keys.json'],
+        'middleware' => ['cms_sign','etag','cdn_json:verifier_public_keys.json'],
         'uses' => 'VerifierController@cdnjson'
     ]
 );
