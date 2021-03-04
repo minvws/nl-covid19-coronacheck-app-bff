@@ -55,7 +55,7 @@ class HolderController extends BaseController
         if(empty($stoken) || empty($testResult) || empty($icm)) {
             Log::error('Cannot create proof. Did not receive stoken, testResult, or icm.');
 
-            return response()->json(["status" => "error", "code" => 0], 500);
+            return response()->json(["status" => "error", "code" => 0], 400);
         }
         try {
 
