@@ -1,0 +1,36 @@
+name: Lumen
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      max-parallel: 3
+      matrix:
+        php-versions: [ '8.0' ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: xdebug, gnupg
+          tools: pecl
+      - name: Copy .env and set APP_KEY
+        run: sed "s/APP_KEY=/APP_KEY=`php -r "echo bin2hex(random_bytes(16));"`/" .env.example > .env
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Directory Permissions
+        run: chmod -R 777 storage
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.2.0
+      - name: Static analysis with PHPStan
+        run: vendor/bin/phpstan analyse app
