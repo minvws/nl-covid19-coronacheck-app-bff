@@ -4,7 +4,7 @@
 This repository contains the lumen app which sits in front of the CoronaCheck backend services.
 
 ## Installation
-Code should work on any Linux flavored OS.
+Code should work on any Linux flavored OS but has been tested on Ubuntu 20.04.
 
 ### Installation steps
 Install dependencies. On debian/ubuntu this is done by
@@ -21,10 +21,6 @@ See `.env.example` or `config/*.php` for configuration options.
 Two important configuration items when debugging/testing:
 - `SIGNED_TEST_HASH_DURATION` (seconds) is how the fact/hash that a test result has been signed is stored
 - `SESSION_DURATION` (seconds) is how long the nonce is stored
-- `SIGNATURE_FORMAT` can be `inline`, `inline-double`, `header`, or `none`. Inline double adds `_payload` which is a copy of payload without the base64 encoding.
-
-Note that Signatures must be inline when using php-fpm/proxy_fcgi as Apache does not support
-headers larger than 5000 bytes. This will result in the error `AH01070: Error parsing script headers`.
 
 #### CTP Provider Public Keys
 The application expects CMS public keys used to sign test results to be located in the directory specified
@@ -34,7 +30,7 @@ in the `.env` by `CMS_SIGN_CTP_DIR` in the following format `brb_cms_sign_public
 Several API's are loaded statically. These should be placed in the directory specified by `CDN_FILES_DIR`
 
 ## Error codes
-Sometimes the `get_test_ism` api will give an error code:
+The `get_test_ism` api will give an error code if the received test result is incorrect.
 
 Http Code | Status Code | Description
 ----------|-------------|-----------------------------------
