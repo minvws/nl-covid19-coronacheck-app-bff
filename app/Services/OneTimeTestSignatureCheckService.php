@@ -14,9 +14,14 @@ class OneTimeTestSignatureCheckService
 
         // This token can always get another signed test result
         // BRB-TESTFLIGHT-Z2
-        if(config('app.env') != "production"
-            && $providerIdentifier == 'BRB'
-            && $unique == 'd3a368c584b02296974f69f368f04ba23a9e0149'
+        if(config('app.allow_test_keys')
+            &&
+            (
+                ($providerIdentifier == 'BRB' && $unique == 'd3a368c584b02296974f69f368f04ba23a9e0149')
+                ||
+                ($providerIdentifier == 'ZZZ' && $unique == 'e79698778dab710145b76f16408e8124b5b88d7b')
+            )
+
         ) {
             return true;
         }
