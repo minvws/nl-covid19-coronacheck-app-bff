@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Install PHP
         uses: shivammathur/setup-php@master
         with:
@@ -28,7 +28,7 @@ jobs:
       - name: Create tar
         run: tar -czf ct_bff_${{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./public ./resources ./routes ./storage ./vendor ./composer.json
       - name: Upload release tar
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ct_bff_${{ env.RELEASE_VERSION }}
           path: ct_bff_${{ env.RELEASE_VERSION }}.tar.gz
